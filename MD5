@@ -1,0 +1,10 @@
+ff36315b4dbe3f04c62fea8faf18db5f *DESCRIPTION
+12ed4a61a8a8b656976f3a5d59befc46 *NAMESPACE
+18211103b8b0a8ff80313e4e7a4343a1 *R/HRdata.r
+cdadcc2c2d90c65e1dbbfbfb4d3ed72c *R/binipw.r
+1d8cf6852f4e15c3b14f4b1fadba28f8 *R/hripw.r
+c90019187ecfc3686fa5aa5a48506933 *README.md
+b61dc0dd270157384677bb22e4a5b7a6 *build/partial.rdb
+1ebdad667d4022d608d8f3095f3f2598 *data/hrData.rda
+6e96285dd0cfcf435325941df86b4b4f *man/hrData.Rd
+2b1db5dd6e4af4d96fbc7521b2a7c199 *man/hrIPW.Rd
