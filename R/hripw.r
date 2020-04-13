@@ -1,6 +1,6 @@
 #' Hazard ratio estimation using Cox model weighted by the propensity score
 #'
-#' This function allows estimating the log hazard ratio associated with a binary exposure using a Cox PH model weighted by the propensity score. Propensity model is estimated using a simple logistic regression. Variance estimation takes into account the propensity score estimation step with the method proposed by Hajage *et al.* (2018) \doi{10.1002/bimj.201700330}. Both the average treatment effect on the overall (ATE) or the treated (ATT) population can be estimated. For ATE, both unstabilized and stabilized weights can be used. Ties are handled throught the Breslow approximation.
+#' This function allows estimating the log hazard ratio associated with a binary exposure using a Cox PH model weighted by the propensity score. Propensity model is estimated using a simple logistic regression. Variance estimation takes into account the propensity score estimation step with the method proposed by Hajage *et al.* (2018) \doi{10.1002/bimj.201700330}. Both the average treatment effect on the overall (ATE) or the treated (ATT) population can be estimated. For ATE, both unstabilized and stabilized weights can be used. Ties are handled through the Breslow approximation.
 #'
 #' @param data The data.frame to be analyzed.
 #' @param time A character string indicating the name of the follow up times column.
@@ -63,21 +63,21 @@
 #' }
 #'
 #' ## Using the DIVAT data base (package IPWsurvival, to be installed)
-#' data(DIVAT, package = "IPWsurvival")
-#' hrIPW(data = DIVAT, time = "times", status = "failures", exposure = "ecd",
+#' data(dataDIVAT2, package = "RISCA")
+#' hrIPW(data = dataDIVAT2, time = "times", status = "failures", exposure = "ecd",
 #'       variables = c("age", "hla", "retransplant"), wtype = "ATE-unstab")
 #'
 #' # Standard error could be compared with the (robust) Lin's standard error
 #' # which does not take into account the propensity score estimation step:
-#' modT <- glm(ecd ~ age + hla + retransplant, data = DIVAT, family = "binomial")
+#' modT <- glm(ecd ~ age + hla + retransplant, data = dataDIVAT2, family = "binomial")
 #' probT <- predict(modT, type = "response")
-#' DIVAT$w <- 1/ifelse(DIVAT$ecd == 1, probT, 1 - probT)
-#' DIVAT$id <- 1:nrow(DIVAT)
-#' coxph(Surv(times, failures) ~ ecd + cluster(id), data = DIVAT, method = "breslow", weights = w)
+#' dataDIVAT2$w <- 1/ifelse(dataDIVAT2$ecd == 1, probT, 1 - probT)
+#' dataDIVAT2$id <- 1:nrow(dataDIVAT2)
+#' coxph(Surv(times, failures) ~ ecd + cluster(id), data = dataDIVAT2, method = "breslow", weights = w)
 #'
 #' # or with the bootstrap-based estimation (see Austin 2016):
 #' \dontrun{
-#' f.boot2 <- function(data, i, wtype) {
+#' f.boot <- function(data, i, wtype) {
 #'     df <- data[i, ]
 #'     modT <- glm(ecd ~ age + hla + retransplant, data = df, family = "binomial")
 #'     probT <- predict(modT, type = "response")
@@ -86,9 +86,9 @@
 #'     return(coxph(Surv(times, failures) ~ ecd, data = df, weights = w)$coef)
 #' }
 #'
-#' set.seed(1234)
-#' rcoefs2 <- boot(data = DIVAT, statistic = f.boot2, R = 500)$t
-#' sd(rcoefs2)
+#' set.seed(123)
+#' rcoefs <- boot(data = dataDIVAT2, statistic = f.boot, R = 200)$t
+#' sd(rcoefs)
 #' }
 hrIPW <- function(data, time, status, exposure, variables, wtype, alpha = 0.05) {
 

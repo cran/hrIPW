@@ -4,7 +4,9 @@
 \name{hrData}
 \alias{hrData}
 \title{A simulated data set}
-\format{An object of class \code{"data.frame"}.}
+\format{
+An object of class \code{"data.frame"}.
+}
 \usage{
 data(hrData)
 }
